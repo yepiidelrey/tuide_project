@@ -1,0 +1,6 @@
+Replace the existing/fallback character with your own image:
+1. Prepare a transparent PNG.
+2. Rename it to: character.png
+3. Put it in this folder: assets/character.png
+4. Keep the filename exactly "character.png".
+The game will automatically use it as the player character.

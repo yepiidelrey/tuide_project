@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>TUIDE CATCH</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="game-shell">
+    <canvas id="gameCanvas"></canvas>
+
+    <header class="hud">
+      <div class="hud-pill score-pill">⭐ <span id="score">0</span></div>
+      <div class="hud-pill hp-pill" id="hp">♥ ♥ ♥</div>
+      <div class="hud-pill timer-pill">◷ <span id="timer">03:07</span></div>
+      <button class="pause-btn" id="pauseBtn" aria-label="Pause">Ⅱ</button>
+    </header>
+
+    <div class="mission">⭐ Catch the spinning sheep! <span id="stageLabel">BOSS 1/3</span></div>
+
+    <div class="bottom-ui">
+      <div class="controls">
+        <span class="key wide">MOVE</span>
+        <span class="key wide">SPACE</span><span>Attack</span>
+      </div>
+      <div class="power">
+        <div class="weapon-icon">✦</div>
+        <div class="power-ring"><span id="powerText">1</span></div>
+      </div>
+    </div>
+
+    <div class="touch-controls" id="touchControls">
+      <div class="dpad">
+        <button id="touchUp">↑</button>
+        <div class="dpad-middle">
+          <button id="touchLeft">←</button>
+          <button id="touchAttack">✦</button>
+          <button id="touchRight">→</button>
+        </div>
+        <button id="touchDown">↓</button>
+      </div>
+    </div>
+
+    <section class="screen" id="startScreen">
+      <div class="menu-card">
+        <div class="tiny-star">✦</div>
+        <h1>TUIDE <span>CATCH</span></h1>
+        <p>Catch the sheep. Defeat 3 bosses. Each boss gets stronger.</p>
+        <button class="primary" id="startBtn">▶ PLAY</button>
+        <button class="secondary" id="shopBtn">🛍 SHOP</button>
+        <button class="secondary" id="settingsBtn">⚙ SETTINGS</button>
+      </div>
+    </section>
+
+    <section class="screen hidden" id="pauseScreen">
+      <div class="menu-card small">
+        <h2>PAUSED</h2>
+        <button class="primary" id="continueBtn">CONTINUE</button>
+        <button class="secondary" id="restartBtn1">RESTART</button>
+        <button class="secondary" id="menuBtn1">MAIN MENU</button>
+      </div>
+    </section>
+
+    <section class="screen hidden" id="gameOverScreen">
+      <div class="menu-card">
+        <div class="tiny-star">✦</div>
+        <h2 id="resultTitle">GAME OVER</h2>
+        <p>YOUR SCORE</p>
+        <strong class="final-score" id="finalScore">0</strong>
+        <p id="resultMessage">The sheep escaped!</p>
+        <button class="primary" id="playAgainBtn">PLAY AGAIN</button>
+        <button class="secondary" id="menuBtn2">MAIN MENU</button>
+      </div>
+    </section>
+
+    <section class="modal hidden" id="shopModal">
+      <div class="settings-card shop-card">
+        <button class="close" id="closeShop">×</button>
+        <div class="shop-title-row"><h2>SHOP</h2><div class="shop-stars">⭐ <span id="shopStars">0</span></div></div>
+        <label>CHARACTERS</label>
+        <div class="shop-grid" id="characterShop"></div>
+        <label>ATTACKS</label>
+        <div class="power-shop-grid" id="attackShop"></div>
+        <label>POWERS</label>
+        <div class="power-shop-grid" id="powerShop"></div>
+        <p class="hint">⭐ Star = currency. Power items use different images and give gameplay abilities. Purchases are saved automatically.</p>
+      </div>
+    </section>
+
+    <section class="modal hidden" id="settingsModal">
+      <div class="settings-card">
+        <button class="close" id="closeSettings">×</button>
+        <h2>SETTINGS</h2>
+
+        <label>CONTROL</label>
+        <div class="segmented">
+          <button data-control="keyboard" class="control-option active">⌨ Keyboard</button>
+          <button data-control="mouse" class="control-option">🖱 Mouse</button>
+          <button data-control="touch" class="control-option">☝ Touch</button>
+        </div>
+
+        <label>GAMEPLAY</label>
+        <div class="setting-row"><span>Background Animation</span><input type="checkbox" id="bgToggle" checked></div>
+        <div class="setting-row"><span>Screen Shake</span><input type="checkbox" id="shakeToggle" checked></div>
+        <div class="setting-row"><span>Music</span><input type="checkbox" id="musicToggle" checked></div>
+        <div class="setting-row"><span>Sound Effects</span><input type="checkbox" id="sfxToggle" checked></div>
+
+        <p class="hint">Touch: drag in any direction or use the 4-way pad. Mouse: move in any direction. Keyboard: WASD / Arrow Keys. Space: Attack. P: Pause. Music pauses automatically when the game is paused.</p>
+      </div>
+    </section>
+
+    <div class="toast" id="toast"></div>
+  </main>
+
+  <audio id="mainBgm" preload="auto"></audio><audio id="danceBgm" preload="auto"></audio>
+  <script src="script.js"></script>
+</body>
+</html>
