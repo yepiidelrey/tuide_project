@@ -227,7 +227,7 @@ updateControlUI();
     $('stageLabel').textContent=game.bossStage<3?`BOSS ${game.bossStage+1}/3`:'VICTORY';
     if(game.time<=0 && game.boss) $('stageLabel').textContent=`BOSS ${game.bossStage+1}/3 • FINAL PUSH`;
   }
-}
+
 function burst(x,y,color,n=10){for(let i=0;i<n;i++)game.particles.push({x,y,vx:(Math.random()-.5)*280,vy:(Math.random()-.5)*280,life:.45+Math.random()*.5,color,size:3+Math.random()*5});}
 function attack(){
   if(!game.running||game.paused||game.shotCD>0)return;game.shotCD=.2;
