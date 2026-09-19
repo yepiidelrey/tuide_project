@@ -139,7 +139,7 @@ function buyOrEquipCharacter(file){
   const c=SHOP_CHARACTERS.find(x=>x.file===file); if(!c)return;
   if(game.ownedCharacters.includes(file)){game.selectedCharacter=file;characterImg.src=`./assets/${file}`;saveGame();renderShop();return;}
   if(game.stars<c.price){showToast('Not enough ⭐');return;}
-  game.stars-=c.price;game.ownedCharacters.push(file);game.selectedCharacter=file;characterImg.src=`./assets/${file}`;saveGame();renderShop();hud();showToast(`${c.name} unlocked!`);
+  game.stars-=c.price;game.ownedCharacters.push(file);game.selectedCharacter=file;characterImg.src=`assets/${file}`;saveGame();renderShop();hud();showToast(`${c.name} unlocked!`);
 }
 function buyOrEquipAttack(file){
   const a=SHOP_ATTACKS.find(x=>x.file===file); if(!a)return;
@@ -187,21 +187,19 @@ bindHold('touchUp','arrowup'); bindHold('touchDown','arrowdown'); bindHold('touc
 $('touchAttack')?.addEventListener('pointerdown',e=>{e.preventDefault();attack();});
 
 function reset(){
-  // Keep the player's saved star balance when starting/restarting a run.
-  // Stars are persistent currency, so reset() must never set them back to 0.
-  game.score=0;game.hp=3;game.stars=Math.max(0, Number(game.stars)||0);game.time=187;game.power=1;game.boss=false;game.bossStage=0;game.victoryCelebration=false;game.victoryTimer=0;game.finaleElapsed=0;game.stageTransition=0;game.bossHp=100;game.bossMaxHp=100;game.bossWait=30;game.bossX=W*.83;game.bossY=H*.34;game.bossVX=0;game.bossVY=0;game.ultimateTimer=15;game.ultimateFlash=0;game.ultimateActive=0;
+  game.score=0;game.hp=3;game.stars=game.stars||0;game.time=187;game.power=1;game.boss=false;game.bossStage=0;game.victoryCelebration=false;game.victoryTimer=0;game.finaleElapsed=0;game.stageTransition=0;game.bossHp=100;game.bossMaxHp=100;game.bossWait=30;game.bossX=W*.83;game.bossY=H*.34;game.bossVX=0;game.bossVY=0;game.ultimateTimer=15;game.ultimateFlash=0;game.ultimateActive=0;
   game.spawn=0;game.starSpawn=0;game.diamondSpawn=0;game.powerSpawn=0;game.shotCD=0;mainBgm.currentTime=0;danceBgm.currentTime=0;giftBgm.currentTime=0;
   game.sheep=[];game.pickups=[];game.shots=[];game.bossShots=[];game.particles=[];game.giftReady=false;game.giftOpened=false;game.giftTimer=0;game.finalDark=0;game.finalGiftDelay=8;
   game.player.x=90;game.player.y=H/2;game.player.targetX=90;game.player.targetY=H/2;game.player.inv=0;
   hud();
 }
 function start(){reset();game.running=true;game.paused=false;$('startScreen').classList.add('hidden');$('pauseScreen').classList.add('hidden');$('gameOverScreen').classList.add('hidden');game.last=performance.now();syncMusic();}
-function end(win){if(game.victoryCelebration&&game.bossStage===2&&!win)return;game.running=false;syncMusic();$('resultTitle').textContent=win?'VICTORY!':'GAME OVER';$('resultMessage').textContent=win?'Boss defeated!':'Try again and catch more sheep!';$('finalScore').textContent=game.stars;$('gameOverScreen').classList.remove('hidden');}
+function end(win){if(game.victoryCelebration&&game.bossStage===2&&!win)return;game.running=false;syncMusic();$('resultTitle').textContent=win?'VICTORY!':'GAME OVER';$('resultMessage').textContent=win?'Boss defeated!':'Try again and catch more sheep!';$('finalScore').textContent=game.score;$('gameOverScreen').classList.remove('hidden');}
 function togglePause(){if(!game.running)return;game.paused=!game.paused;$('pauseScreen').classList.toggle('hidden',!game.paused);game.last=performance.now();syncMusic();}
 function menu(){game.running=false;syncMusic();game.paused=false;$('pauseScreen').classList.add('hidden');$('gameOverScreen').classList.add('hidden');$('startScreen').classList.remove('hidden');}
 $('startBtn').onclick=start;$('playAgainBtn').onclick=start;$('pauseBtn').onclick=togglePause;$('continueBtn').onclick=togglePause;$('restartBtn1').onclick=start;$('menuBtn1').onclick=menu;$('menuBtn2').onclick=menu;
 
-$('shopBtn').onclick=()=>{saveGame();renderShop();$('shopModal').classList.remove('hidden');};
+$('shopBtn').onclick=()=>{renderShop();$('shopModal').classList.remove('hidden');};
 $('closeShop').onclick=()=>$('shopModal').classList.add('hidden');
 $('settingsBtn').onclick=()=>$('settingsModal').classList.remove('hidden');
 $('closeSettings').onclick=()=>$('settingsModal').classList.add('hidden');
@@ -218,8 +216,8 @@ $('bgToggle').onchange=e=>game.bgAnim=e.target.checked;$('shakeToggle').onchange
 function updateControlUI(){ $('touchControls').classList.toggle('show',game.control==='touch'); }
 updateControlUI();
 
-// The visible counter is STAR currency. Internal score remains hidden because it is used only for gameplay progression.\nfunction hud(){
-  $('score').textContent=game.stars; if($('shopStars'))$('shopStars').textContent=game.stars;
+function hud(){
+  $('score').textContent=game.score; if($('shopStars'))$('shopStars').textContent=game.stars;
   $('hp').textContent='♥ '.repeat(Math.max(0,game.hp)).trim()||'♡ ♡ ♡';
   const s=Math.max(0,Math.ceil(game.time));$('timer').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
   $('powerText').textContent=game.power;
@@ -227,7 +225,7 @@ updateControlUI();
     $('stageLabel').textContent=game.bossStage<3?`BOSS ${game.bossStage+1}/3`:'VICTORY';
     if(game.time<=0 && game.boss) $('stageLabel').textContent=`BOSS ${game.bossStage+1}/3 • FINAL PUSH`;
   }
-
+}
 function burst(x,y,color,n=10){for(let i=0;i<n;i++)game.particles.push({x,y,vx:(Math.random()-.5)*280,vy:(Math.random()-.5)*280,life:.45+Math.random()*.5,color,size:3+Math.random()*5});}
 function attack(){
   if(!game.running||game.paused||game.shotCD>0)return;game.shotCD=.2;
