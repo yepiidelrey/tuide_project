@@ -78,7 +78,7 @@ const BOSS_STATS=[
   {hp:280, speedX:-95, speedY:75, ultEvery:9, shotRate:1.6, ultRows:5, ultShots:7}
 ];
 const game={
-  running:false,paused:false,score:0,hp:3,time:187,power:1,boss:false,bossStage:0,bossHp:100,bossMaxHp:100,bossX:0,bossY:0,bossVX:0,bossVY:0,ultimateTimer:15,ultimateFlash:0,ultimateActive:0,victoryCelebration:false,victoryTimer:0,finaleElapsed:0,stageTransition:0,bossWait:30,giftReady:false,giftOpened:false,giftTimer:0,finalDark:0,finalGiftDelay:0,
+  running:false,paused:false,hp:3,time:187,power:1,boss:false,bossStage:0,bossHp:100,bossMaxHp:100,bossX:0,bossY:0,bossVX:0,bossVY:0,ultimateTimer:15,ultimateFlash:0,ultimateActive:0,victoryCelebration:false,victoryTimer:0,finaleElapsed:0,stageTransition:0,bossWait:30,giftReady:false,giftOpened:false,giftTimer:0,finalDark:0,finalGiftDelay:0,
   control:'keyboard',bgAnim:true,shake:true,music:true,sfx:true,stars:0,ownedCharacters:['karakter_2.png'],selectedCharacter:'karakter_2.png',ownedPowers:[],ownedAttacks:['serangankarakter1.png'],selectedAttack:'serangankarakter1.png',spawn:0,starSpawn:0,diamondSpawn:0,powerSpawn:0,shotCD:0,shakeTime:0,
   player:{x:90,y:360,w:90,h:90,speed:430,targetX:90,targetY:360,inv:0},
   sheep:[],pickups:[],shots:[],bossShots:[],particles:[]
@@ -189,14 +189,14 @@ $('touchAttack')?.addEventListener('pointerdown',e=>{e.preventDefault();attack()
 function reset(){
   // Keep the player's saved star balance when starting/restarting a run.
   // Stars are persistent currency, so reset() must never set them back to 0.
-  game.score=0;game.hp=3;game.stars=Math.max(0, Number(game.stars)||0);game.time=187;game.power=1;game.boss=false;game.bossStage=0;game.victoryCelebration=false;game.victoryTimer=0;game.finaleElapsed=0;game.stageTransition=0;game.bossHp=100;game.bossMaxHp=100;game.bossWait=30;game.bossX=W*.83;game.bossY=H*.34;game.bossVX=0;game.bossVY=0;game.ultimateTimer=15;game.ultimateFlash=0;game.ultimateActive=0;
+  game.hp=3;game.stars=Math.max(0, Number(game.stars)||0);game.time=187;game.power=1;game.boss=false;game.bossStage=0;game.victoryCelebration=false;game.victoryTimer=0;game.finaleElapsed=0;game.stageTransition=0;game.bossHp=100;game.bossMaxHp=100;game.bossWait=30;game.bossX=W*.83;game.bossY=H*.34;game.bossVX=0;game.bossVY=0;game.ultimateTimer=15;game.ultimateFlash=0;game.ultimateActive=0;
   game.spawn=0;game.starSpawn=0;game.diamondSpawn=0;game.powerSpawn=0;game.shotCD=0;mainBgm.currentTime=0;danceBgm.currentTime=0;giftBgm.currentTime=0;
   game.sheep=[];game.pickups=[];game.shots=[];game.bossShots=[];game.particles=[];game.giftReady=false;game.giftOpened=false;game.giftTimer=0;game.finalDark=0;game.finalGiftDelay=8;
   game.player.x=90;game.player.y=H/2;game.player.targetX=90;game.player.targetY=H/2;game.player.inv=0;
   hud();
 }
 function start(){reset();game.running=true;game.paused=false;$('startScreen').classList.add('hidden');$('pauseScreen').classList.add('hidden');$('gameOverScreen').classList.add('hidden');game.last=performance.now();syncMusic();}
-function end(win){if(game.victoryCelebration&&game.bossStage===2&&!win)return;game.running=false;syncMusic();$('resultTitle').textContent=win?'VICTORY!':'GAME OVER';$('resultMessage').textContent=win?'Boss defeated!':'Try again and catch more sheep!';$('finalScore').textContent=game.score;$('gameOverScreen').classList.remove('hidden');}
+function end(win){if(game.victoryCelebration&&game.bossStage===2&&!win)return;game.running=false;syncMusic();$('resultTitle').textContent=win?'VICTORY!':'GAME OVER';$('resultMessage').textContent=win?'Boss defeated!':'Try again and catch more sheep!';$('finalStars').textContent=game.stars;$('gameOverScreen').classList.remove('hidden');}
 function togglePause(){if(!game.running)return;game.paused=!game.paused;$('pauseScreen').classList.toggle('hidden',!game.paused);game.last=performance.now();syncMusic();}
 function menu(){game.running=false;syncMusic();game.paused=false;$('pauseScreen').classList.add('hidden');$('gameOverScreen').classList.add('hidden');$('startScreen').classList.remove('hidden');}
 $('startBtn').onclick=start;$('playAgainBtn').onclick=start;$('pauseBtn').onclick=togglePause;$('continueBtn').onclick=togglePause;$('restartBtn1').onclick=start;$('menuBtn1').onclick=menu;$('menuBtn2').onclick=menu;
@@ -219,7 +219,7 @@ function updateControlUI(){ $('touchControls').classList.toggle('show',game.cont
 updateControlUI();
 
 function hud(){
-  $('score').textContent=game.score; if($('shopStars'))$('shopStars').textContent=game.stars;
+  $('stars').textContent=game.stars; if($('shopStars'))$('shopStars').textContent=game.stars;
   $('hp').textContent='♥ '.repeat(Math.max(0,game.hp)).trim()||'♡ ♡ ♡';
   const s=Math.max(0,Math.ceil(game.time));$('timer').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
   $('powerText').textContent=game.power;
@@ -266,7 +266,7 @@ function bossHit(d){
     game.bossShots=[];
     game.ultimateFlash=0;
     game.ultimateActive=0;
-    game.score += 1000*(defeatedStage+1);
+    
     game.stars += 100*(defeatedStage+1); saveGame();
 
     // Every boss defeat gets a short dance + white fantasy explosion.
@@ -384,8 +384,8 @@ function update(dt){
   }
 
   game.sheep.forEach(s=>{s.x-=s.vx*dt;s.rot+=dt*4;if(rectHit(p,s)){hurt();s.x=-300;}});game.sheep=game.sheep.filter(s=>s.x>-200);
-  game.pickups.forEach(q=>{q.x-=q.vx*dt;q.rot+=dt*5;if(circlePlayer(q)){if(q.type==='star'){game.score+=10;game.stars+=10;saveGame();burst(q.x,q.y,'#ffe99b',8);}else if(q.type==='diamond'){game.score+=40;game.hp=Math.min(3,game.hp+1);burst(q.x,q.y,'#9bdfff',12);}else if(q.type==='poison'){game.power=Math.min(3,game.power+1);burst(q.x,q.y,'#b56cff',18);showToast('POISON POWER UP!');}q.x=-200;hud();}});game.pickups=game.pickups.filter(q=>q.x>-200);
-  game.shots.forEach(s=>{s.x+=s.vx*dt;s.y+=s.vy*dt;s.life-=dt;game.sheep.forEach(t=>{if(Math.hypot(s.x-(t.x+t.w/2),s.y-(t.y+t.h/2))<60){s.life=0;t.hp--;burst(t.x+t.w/2,t.y+t.h/2,'#fff0a5',10);if(t.hp<=0){game.score+=25;t.x=-300;hud();}}});if(game.boss&&s.x>W*.72&&s.x<W&&s.y>H*.15&&s.y<H*.6){s.life=0;bossHit(game.power>=3?7:game.power>=2?5:3);}});game.shots=game.shots.filter(s=>s.life>0&&s.x<W+80);
+  game.pickups.forEach(q=>{q.x-=q.vx*dt;q.rot+=dt*5;if(circlePlayer(q)){if(q.type==='star'){game.stars+=10;saveGame();burst(q.x,q.y,'#ffe99b',8);}else if(q.type==='diamond'){game.hp=Math.min(3,game.hp+1);burst(q.x,q.y,'#9bdfff',12);}else if(q.type==='poison'){game.power=Math.min(3,game.power+1);burst(q.x,q.y,'#b56cff',18);showToast('POISON POWER UP!');}q.x=-200;hud();}});game.pickups=game.pickups.filter(q=>q.x>-200);
+  game.shots.forEach(s=>{s.x+=s.vx*dt;s.y+=s.vy*dt;s.life-=dt;game.sheep.forEach(t=>{if(Math.hypot(s.x-(t.x+t.w/2),s.y-(t.y+t.h/2))<60){s.life=0;t.hp--;burst(t.x+t.w/2,t.y+t.h/2,'#fff0a5',10);if(t.hp<=0){t.x=-300;hud();}}});if(game.boss&&s.x>W*.72&&s.x<W&&s.y>H*.15&&s.y<H*.6){s.life=0;bossHit(game.power>=3?7:game.power>=2?5:3);}});game.shots=game.shots.filter(s=>s.life>0&&s.x<W+80);
   if(game.boss){
     // Boss moves freely: forward/backward (X) and up/down (Y).
     game.bossX += game.bossVX*dt;
@@ -419,7 +419,7 @@ function update(dt){
   }
   game.bossShots.forEach(b=>{b.x+=b.vx*dt;b.y+=b.vy*dt;if(circlePlayer(b)){hurt();b.x=-300;}});game.bossShots=game.bossShots.filter(b=>b.x>-300&&b.y>-100&&b.y<H+100);
   game.particles.forEach(q=>{q.x+=q.vx*dt;q.y+=q.vy*dt;q.vy+=180*dt;q.life-=dt;});game.particles=game.particles.filter(q=>q.life>0);
-  if(game.score>=550)game.power=3;else if(game.score>=300)game.power=2; if(game.bossStage>=2)game.power=3;hud();
+  if(game.stars>=550)game.power=3;else if(game.stars>=300)game.power=2; if(game.bossStage>=2)game.power=3;hud();
 }
 
 function drawBg(t){
