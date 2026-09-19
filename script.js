@@ -264,7 +264,7 @@ function bossHit(d){
     game.bossShots=[];
     game.ultimateFlash=0;
     game.ultimateActive=0;
-    game.score += 1000*(defeatedStage+1);
+    game.score += 100*(defeatedStage+1);
     game.stars += 100*(defeatedStage+1); saveGame();
 
     // Every boss defeat gets a short dance + white fantasy explosion.
