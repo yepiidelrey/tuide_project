@@ -22,7 +22,7 @@ const giftRewardImg=new Image();giftRewardImg.src='./assets/gift_reward.jpg';
 
 const sheepImg = new Image(); sheepImg.src = './assets/sheep.png';
 const starImg = new Image(); starImg.src = './assets/star.png';
-const diamondImg = new Image(); diamondImg.src = './assets/heart.png';
+const diamondImg = new Image(); diamondImg.src = './assets/Heart.png';
 function loadImageCandidates(candidates){
   const img=new Image();
   let index=0;
@@ -125,11 +125,11 @@ function renderShop(){
   }).join('');
   $('attackShop').innerHTML=SHOP_ATTACKS.map(a=>{
     const owned=game.ownedAttacks.includes(a.file), equipped=game.selectedAttack===a.file;
-    return `<div class="shop-item attack-item"><div class="shop-preview"><img src="assets/${a.file}" onerror="this.style.display='none'"></div><strong>${a.name}</strong><small>${a.price?'⭐ '+a.price:'FREE'}</small><button class="shop-buy" data-attack="${a.file}">${equipped?'EQUIPPED':owned?'EQUIP':`BUY ⭐ ${a.price}`}</button></div>`;
+    return `<div class="shop-item attack-item"><div class="shop-preview"><img src="./assets/${a.file}" onerror="this.style.display='none'"></div><strong>${a.name}</strong><small>${a.price?'⭐ '+a.price:'FREE'}</small><button class="shop-buy" data-attack="${a.file}">${equipped?'EQUIPPED':owned?'EQUIP':`BUY ⭐ ${a.price}`}</button></div>`;
   }).join('');
   $('powerShop').innerHTML=SHOP_POWERS.map(p=>{
     const owned=game.ownedPowers.includes(p.id);
-    return `<div class="shop-item power-item"><div class="shop-preview"><img src="assets/${p.id}.png" onerror="this.style.display='none'"></div><strong>${p.name}</strong><small>${p.description}</small><button class="shop-buy" data-power="${p.id}">${owned?'OWNED':`BUY ⭐ ${p.price}`}</button></div>`;
+    return `<div class="shop-item power-item"><div class="shop-preview"><img src="./assets/${p.id}.png" onerror="this.style.display='none'"></div><strong>${p.name}</strong><small>${p.description}</small><button class="shop-buy" data-power="${p.id}">${owned?'OWNED':`BUY ⭐ ${p.price}`}</button></div>`;
   }).join('');
   document.querySelectorAll('[data-char]').forEach(b=>b.onclick=()=>buyOrEquipCharacter(b.dataset.char));
   document.querySelectorAll('[data-power]').forEach(b=>b.onclick=()=>buyPower(b.dataset.power));  document.querySelectorAll('[data-attack]').forEach(b=>b.onclick=()=>buyOrEquipAttack(b.dataset.attack));
@@ -137,9 +137,9 @@ function renderShop(){
 }
 function buyOrEquipCharacter(file){
   const c=SHOP_CHARACTERS.find(x=>x.file===file); if(!c)return;
-  if(game.ownedCharacters.includes(file)){game.selectedCharacter=file;characterImg.src=`assets/${file}`;saveGame();renderShop();return;}
+  if(game.ownedCharacters.includes(file)){game.selectedCharacter=file;characterImg.src=`./assets/${file}`;saveGame();renderShop();return;}
   if(game.stars<c.price){showToast('Not enough ⭐');return;}
-  game.stars-=c.price;game.ownedCharacters.push(file);game.selectedCharacter=file;characterImg.src=`assets/${file}`;saveGame();renderShop();hud();showToast(`${c.name} unlocked!`);
+  game.stars-=c.price;game.ownedCharacters.push(file);game.selectedCharacter=file;characterImg.src=`./assets/${file}`;saveGame();renderShop();hud();showToast(`${c.name} unlocked!`);
 }
 function buyOrEquipAttack(file){
   const a=SHOP_ATTACKS.find(x=>x.file===file); if(!a)return;
@@ -187,7 +187,9 @@ bindHold('touchUp','arrowup'); bindHold('touchDown','arrowdown'); bindHold('touc
 $('touchAttack')?.addEventListener('pointerdown',e=>{e.preventDefault();attack();});
 
 function reset(){
-  game.score=0;game.hp=3;game.stars=game.stars||0;game.time=187;game.power=1;game.boss=false;game.bossStage=0;game.victoryCelebration=false;game.victoryTimer=0;game.finaleElapsed=0;game.stageTransition=0;game.bossHp=100;game.bossMaxHp=100;game.bossWait=30;game.bossX=W*.83;game.bossY=H*.34;game.bossVX=0;game.bossVY=0;game.ultimateTimer=15;game.ultimateFlash=0;game.ultimateActive=0;
+  // Keep the player's saved star balance when starting/restarting a run.
+  // Stars are persistent currency, so reset() must never set them back to 0.
+  game.score=0;game.hp=3;game.stars=Math.max(0, Number(game.stars)||0);game.time=187;game.power=1;game.boss=false;game.bossStage=0;game.victoryCelebration=false;game.victoryTimer=0;game.finaleElapsed=0;game.stageTransition=0;game.bossHp=100;game.bossMaxHp=100;game.bossWait=30;game.bossX=W*.83;game.bossY=H*.34;game.bossVX=0;game.bossVY=0;game.ultimateTimer=15;game.ultimateFlash=0;game.ultimateActive=0;
   game.spawn=0;game.starSpawn=0;game.diamondSpawn=0;game.powerSpawn=0;game.shotCD=0;mainBgm.currentTime=0;danceBgm.currentTime=0;giftBgm.currentTime=0;
   game.sheep=[];game.pickups=[];game.shots=[];game.bossShots=[];game.particles=[];game.giftReady=false;game.giftOpened=false;game.giftTimer=0;game.finalDark=0;game.finalGiftDelay=8;
   game.player.x=90;game.player.y=H/2;game.player.targetX=90;game.player.targetY=H/2;game.player.inv=0;
@@ -199,7 +201,7 @@ function togglePause(){if(!game.running)return;game.paused=!game.paused;$('pause
 function menu(){game.running=false;syncMusic();game.paused=false;$('pauseScreen').classList.add('hidden');$('gameOverScreen').classList.add('hidden');$('startScreen').classList.remove('hidden');}
 $('startBtn').onclick=start;$('playAgainBtn').onclick=start;$('pauseBtn').onclick=togglePause;$('continueBtn').onclick=togglePause;$('restartBtn1').onclick=start;$('menuBtn1').onclick=menu;$('menuBtn2').onclick=menu;
 
-$('shopBtn').onclick=()=>{renderShop();$('shopModal').classList.remove('hidden');};
+$('shopBtn').onclick=()=>{saveGame();renderShop();$('shopModal').classList.remove('hidden');};
 $('closeShop').onclick=()=>$('shopModal').classList.add('hidden');
 $('settingsBtn').onclick=()=>$('settingsModal').classList.remove('hidden');
 $('closeSettings').onclick=()=>$('settingsModal').classList.add('hidden');
