@@ -5,24 +5,24 @@ const $ = id => document.getElementById(id);
 
 // ===== REPLACEABLE IMAGES =====
 // Put your own PNG/WebP files in assets/ with these exact names.
-const bg = new Image(); bg.src = 'assets/iceland.jpg';
-const characterImg = new Image(); characterImg.src = 'assets/karakter_2.png';
-const characterImages = ['karakter_2.png','karakter_3.png','karakter_4.png','karakter_5.png','karakter_6.png','karakter_7.png','karakter_8.png','karakter_9.png','karakter_10.png'].map(name=>{const img=new Image();img.src=`assets/${name}`;return img;});
+const bg = new Image(); bg.src = './assets/iceland.jpg';
+const characterImg = new Image(); characterImg.src = './assets/karakter_2.png';
+const characterImages = ['karakter_2.png','karakter_3.png','karakter_4.png','karakter_5.png','karakter_6.png'].map(name=>{const img=new Image();img.src=`./assets/${name}`;return img;});
 const powerImages = {poison:new Image(),shield:new Image(),speed:new Image()};
-powerImages.poison.src='assets/poison.png'; powerImages.shield.src='assets/shield.png'; powerImages.speed.src='assets/speed.png';
-const characterAttackImages=['serangankarakter1.png','serangankarakter2.png','serangankarakter3.png'].map(name=>{const img=new Image();img.src=`assets/${name}`;return img;});
+powerImages.poison.src='./assets/poison.png'; powerImages.shield.src='./assets/shield.png'; powerImages.speed.src='./assets/speed.png';
+const characterAttackImages=['serangankarakter1.png','serangankarakter2.png','serangankarakter3.png'].map(name=>{const img=new Image();img.src=`./assets/${name}`;return img;});
 const bossAttackImages=[
-  ['assets/boss_attack1.png','assets/boss_attack1.jpg','assets/boss_attack1.webp'],
-  ['assets/boss_attack2.png','assets/boss_attack2.jpg','assets/boss_attack2.webp'],
-  ['assets/boss_attack3.png','assets/boss_attack3.jpg','assets/boss_attack3.webp']
+  ['./assets/serangan1boss.png','./assets/boss_attack1.jpg','./assets/boss_attack1.webp'],
+  ['./assets/serangan2boss.png','./assets/boss_attack2.jpg','./assets/boss_attack2.webp'],
+  ['./assets/serangan3boss.png','./assets/boss_attack3.jpg','./assets/boss_attack3.webp']
 ].map(loadImageCandidates);
-const giftClosedImg=new Image();giftClosedImg.src='assets/gift_closed.png';
-const giftOpenImg=new Image();giftOpenImg.src='assets/gift_open.png';
-const giftRewardImg=new Image();giftRewardImg.src='assets/gift_reward.jpg';
+const giftClosedImg=new Image();giftClosedImg.src='./assets/gift_closed.png';
+const giftOpenImg=new Image();giftOpenImg.src='./assets/gift_open.png';
+const giftRewardImg=new Image();giftRewardImg.src='./assets/gift_reward.jpg';
 
-const sheepImg = new Image(); sheepImg.src = 'assets/sheep.png';
-const starImg = new Image(); starImg.src = 'assets/star.png';
-const diamondImg = new Image(); diamondImg.src = 'assets/heart.png';
+const sheepImg = new Image(); sheepImg.src = './assets/sheep.png';
+const starImg = new Image(); starImg.src = './assets/star.png';
+const diamondImg = new Image(); diamondImg.src = './assets/heart.png';
 function loadImageCandidates(candidates){
   const img=new Image();
   let index=0;
@@ -35,20 +35,20 @@ function loadImageCandidates(candidates){
   return img;
 }
 const bossImages = [
-  ['assets/boss1.png','assets/boss1.jpg','assets/boss1.webp'],
-  ['assets/boss2.png','assets/boss2.jpg','assets/boss2.webp'],
-  ['assets/boss3.png','assets/boss3.jpg','assets/boss3.webp']
+  ['./assets/boss1.png','./assets/boss1.jpg','./assets/boss1.webp'],
+  ['./assets/boss2.png','./assets/boss2.jpg','./assets/boss2.webp'],
+  ['./assets/boss3.png','./assets/boss3.jpg','./assets/boss3.webp']
 ].map(loadImageCandidates);
 const bgImages = [
-  ['assets/bg1.jpg','assets/background1.jpg','assets/bg1_boss1.jpg','assets/bg1.png','assets/background1.png'],
-  ['assets/bg2.jpg','assets/background2.jpg','assets/bg2_boss2.jpg','assets/bg2.png','assets/background2.png'],
-  ['assets/bg3.jpg','assets/background3.jpg','assets/bg3_boss3.jpg','assets/bg3.png','assets/background3.png']
+  ['./assets/bg1.jpg','./assets/background1.jpg','./assets/bg1_boss1.jpg','./assets/bg1.png','./assets/background1.png'],
+  ['./assets/bg2.jpg','./assets/background2.jpg','./assets/bg2_boss2.jpg','./assets/bg2.png','./assets/background2.png'],
+  ['./assets/bg3.jpg','./assets/background3.jpg','./assets/bg3_boss3.jpg','./assets/bg3.png','./assets/background3.png']
 ].map(loadImageCandidates);
 
 // Audio: replace these files with your own songs. They start after the PLAY button is clicked.
-const mainBgm = new Audio('assets/sun kiss.mp3');
-const danceBgm = new Audio('assets/cat.mp3');
-const giftBgm = new Audio('assets/gift-bgm.mp3');
+const mainBgm = new Audio('./assets/sun kiss.mp3');
+const danceBgm = new Audio('./assets/cat.mp3');
+const giftBgm = new Audio('./assets/gift-bgm.mp3');
 mainBgm.loop=true; danceBgm.loop=true; giftBgm.loop=false; mainBgm.volume=.55; danceBgm.volume=.7; giftBgm.volume=.85;
 function syncMusic(){
   const shouldPlay = game.running && !game.paused && game.music;
@@ -92,10 +92,6 @@ const SHOP_CHARACTERS = [
   {file:'karakter_4.png', name:'Hanni', price:250},
   {file:'karakter_5.png', name:'Minji', price:500},
   {file:'karakter_6.png', name:'Danielle', price:500},
-  {file:'karakter_7.png', name:'Babeh', price:500},
-  {file:'karakter_8.png', name:'Ha-joon ', price:500},
-  {file:'karakter_9.png', name:'Eun-woo', price:500},
-  {file:'karakter_10.png', name:'Seo-jun ', price:500}
 ];
 const SHOP_ATTACKS = [
   {file:'serangankarakter1.png', name:'Lumen Shot', price:0},
@@ -118,14 +114,14 @@ function loadSave(){
     if(typeof d.selectedAttack==='string')game.selectedAttack=d.selectedAttack;
   }catch(_){}
   const selected=characterImages.find((_,i)=>SHOP_CHARACTERS[i].file===game.selectedCharacter);
-  characterImg.src=`assets/${game.selectedCharacter}`;
+  characterImg.src=`./assets/${game.selectedCharacter}`;
 }
 function saveGame(){localStorage.setItem('tuideCatchSave',JSON.stringify({stars:game.stars,ownedCharacters:game.ownedCharacters,selectedCharacter:game.selectedCharacter,ownedPowers:game.ownedPowers,ownedAttacks:game.ownedAttacks,selectedAttack:game.selectedAttack}));}
 function renderShop(){
   $('shopStars').textContent=game.stars;
   $('characterShop').innerHTML=SHOP_CHARACTERS.map((c,i)=>{
     const owned=game.ownedCharacters.includes(c.file), equipped=game.selectedCharacter===c.file;
-    return `<div class="shop-item"><div class="shop-preview"><img src="assets/${c.file}" onerror="this.style.display='none'"></div><strong>${c.name}</strong><small>${c.price?`⭐ ${c.price}`:'FREE'}</small><button class="shop-buy" data-char="${c.file}">${equipped?'EQUIPPED':owned?'EQUIP':`BUY ⭐ ${c.price}`}</button></div>`;
+    return `<div class="shop-item"><div class="shop-preview"><img src="./assets/${c.file}" onerror="this.style.display='none'"></div><strong>${c.name}</strong><small>${c.price?`⭐ ${c.price}`:'FREE'}</small><button class="shop-buy" data-char="${c.file}">${equipped?'EQUIPPED':owned?'EQUIP':`BUY ⭐ ${c.price}`}</button></div>`;
   }).join('');
   $('attackShop').innerHTML=SHOP_ATTACKS.map(a=>{
     const owned=game.ownedAttacks.includes(a.file), equipped=game.selectedAttack===a.file;
@@ -454,9 +450,33 @@ function drawPlayer(){
   ctx.globalAlpha=p.inv>0&&Math.floor(p.inv*10)%2===0?.45:1;
   ctx.shadowBlur=dancing?32:20;
   ctx.shadowColor=dancing?'#ffffff':'#d5b5ff';
-  if(characterImg.complete&&characterImg.naturalWidth){
-    ctx.drawImage(characterImg,0,0,p.w,p.h);
-  }else{
+  if(characterImg.complete && characterImg.naturalWidth){
+
+  const maxW = p.w * 1.35;
+  const maxH = p.h * 1.35;
+
+  const visualSize = 125;
+
+const scale = Math.min(
+  visualSize / characterImg.naturalWidth,
+  visualSize / characterImg.naturalHeight
+);
+
+const drawW = characterImg.naturalWidth * scale;
+const drawH = characterImg.naturalHeight * scale;
+
+const drawX = (p.w - drawW) / 2;
+const drawY = (p.h - drawH) / 2;
+
+ctx.drawImage(
+  characterImg,
+  drawX,
+  drawY,
+  drawW,
+  drawH
+);
+
+}else{
     ctx.fillStyle='#eab8ff';ctx.beginPath();ctx.arc(p.w/2,30,27,0,Math.PI*2);ctx.fill();
     ctx.fillStyle='#7b48b6';ctx.fillRect(10,8,65,20);
     ctx.fillStyle='#433064';ctx.fillRect(22,29,7,10);ctx.fillRect(58,29,7,10);
@@ -480,7 +500,7 @@ function drawBoss(){
       const bw=188, bh=242;
       ctx.drawImage(currentBoss,-bw/2,-bh/2,bw,bh);
     }else{
-      ctx.drawImage(currentBoss,-72*bossScale,-72*bossScale,144*bossScale,144*bossScale);
+      ctx.drawImage(currentBoss,-82*bossScale,-82*bossScale,154*bossScale,154*bossScale);
     }
   }else{
     ctx.fillStyle='#3f315d';ctx.strokeStyle='#ff9ddd';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(-70,-60);ctx.lineTo(55,-52);ctx.lineTo(76,0);ctx.lineTo(48,62);ctx.lineTo(-58,54);ctx.lineTo(-82,0);ctx.closePath();ctx.fill();ctx.stroke();ctx.fillStyle='#ffb66e';ctx.beginPath();ctx.arc(0,0,34,0,Math.PI*2);ctx.fill();ctx.fillStyle='#392249';ctx.fillRect(-17,-9,10,16);ctx.fillRect(8,-9,10,16);
@@ -536,7 +556,7 @@ function drawFinalGift(t){
     const gx=W/2, gy=H*.62;
     ctx.save();ctx.translate(gx,gy);ctx.scale(pulse,pulse);
     ctx.shadowBlur=30;ctx.shadowColor='#fff';
-    if(giftClosedImg.complete&&giftClosedImg.naturalWidth)ctx.drawImage(giftClosedImg,-65,-65,130,130);
+    if(giftClosedImg.complete&&giftClosedImg.naturalWidth)ctx.drawImage(giftClosedImg,-85,-85,170,170);
     else{ctx.fillStyle='#dba0ff';ctx.fillRect(-55,-45,110,90);ctx.fillStyle='#fff0a5';ctx.fillRect(-10,-45,20,90);ctx.fillRect(-55,-5,110,20);}
     ctx.restore();
     ctx.textAlign='center';ctx.font='900 18px Nunito';ctx.fillStyle='#fff';ctx.fillText('A GIFT IS WAITING FOR YOU',gx,gy+92);
@@ -545,7 +565,7 @@ function drawFinalGift(t){
   if(game.giftOpened){
     const a=Math.min(1,(game.giftTimer-1)/1.5);
     ctx.globalAlpha=Math.max(0,a);
-    if(giftOpenImg.complete&&giftOpenImg.naturalWidth)ctx.drawImage(giftOpenImg,W/2-85,H*.62-85,170,170);
+    if(giftOpenImg.complete&&giftOpenImg.naturalWidth)ctx.drawImage(giftOpenImg,W/2-85,H*.80-100,200,200);
     if(giftRewardImg.complete&&giftRewardImg.naturalWidth){ctx.globalAlpha=Math.min(1,Math.max(0,(game.giftTimer-2)/1.2));ctx.drawImage(giftRewardImg,W/2-60,H*.62-60,120,120);}
     ctx.globalAlpha=1;ctx.textAlign='center';ctx.font='900 28px Nunito';ctx.fillStyle='#fff';ctx.shadowBlur=20;ctx.shadowColor='#fff';ctx.fillText('GIFT UNLOCKED!',W/2,H*.35);
   }
