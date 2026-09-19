@@ -381,7 +381,17 @@ function update(dt){
     }
   }
 
-  game.sheep.forEach(s=>{s.x-=s.vx*dt;s.rot+=dt*4;if(rectHit(p,s)){hurt();s.x=-300;}});game.sheep=game.sheep.filter(s=>s.x>-200);
+ game.sheep.forEach(s => {
+    s.x -= s.vx * dt;
+    s.rot += dt * 4;
+
+    if(rectHit(p, s)){
+        hurt();
+        s.x = -300;
+    }
+});
+
+game.sheep = game.sheep.filter(s => s.x > -200);
 game.pickups.forEach(q=>{
     q.x -= q.vx * dt;
     q.rot += dt * 5;
@@ -418,7 +428,57 @@ game.pickups.forEach(q=>{
 });
 
 game.pickups = game.pickups.filter(q => q.x > -200);
-  game.shots.forEach(s=>{s.x+=s.vx*dt;s.y+=s.vy*dt;s.life-=dt;game.sheep.forEach(t=>{if(Math.hypot(s.x-(t.x+t.w/2),s.y-(t.y+t.h/2))<60){s.life=0;t.hp--;burst(t.x+t.w/2,t.y+t.h/2,'#fff0a5',10);if(t.hp<=0){game.score+=25;t.x=-300;hud();}}});if(game.boss&&s.x>W*.72&&s.x<W&&s.y>H*.15&&s.y<H*.6){s.life=0;bossHit(game.power>=3?7:game.power>=2?5:3);}});game.shots=game.shots.filter(s=>s.life>0&&s.x<W+80);
+ game.shots.forEach(s => {
+    s.x += s.vx * dt;
+    s.y += s.vy * dt;
+    s.life -= dt;
+
+    game.sheep.forEach(t => {
+        if(
+            Math.hypot(
+                s.x - (t.x + t.w / 2),
+                s.y - (t.y + t.h / 2)
+            ) < 60
+        ){
+            s.life = 0;
+            t.hp--;
+
+            burst(
+                t.x + t.w / 2,
+                t.y + t.h / 2,
+                '#fff0a5',
+                10
+            );
+
+            // Sheep kalah → TIDAK mendapat score/star
+            if(t.hp <= 0){
+                t.x = -300;
+                hud();
+            }
+        }
+    });
+
+    // Hit boss → hanya damage boss,
+    // TIDAK mendapat score/star
+    if(
+        game.boss &&
+        s.x > W * .72 &&
+        s.x < W &&
+        s.y > H * .15 &&
+        s.y < H * .6
+    ){
+        s.life = 0;
+
+        bossHit(
+            game.power >= 3 ? 7 :
+            game.power >= 2 ? 5 : 3
+        );
+    }
+});
+
+game.shots = game.shots.filter(
+    s => s.life > 0 && s.x < W + 80
+);
   if(game.boss){
     // Boss moves freely: forward/backward (X) and up/down (Y).
     game.bossX += game.bossVX*dt;
